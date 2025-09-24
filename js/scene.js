@@ -18,6 +18,7 @@ var probabilityTextBlock1 = new BABYLON.GUI.TextBlock();
 var azimuthRadiansTextBlock = new BABYLON.GUI.TextBlock();
 
 var outcomeProbabilityBar = new BABYLON.GUI.Slider();
+var outcomeProbabilityValueTextBlock = new BABYLON.GUI.TextBlock();
 
 function adaptRatio(value) {
     var devicePixelRatio = window.devicePixelRatio || 1.0;
@@ -70,7 +71,16 @@ function createScene(engine, canvas, config) {
     outcomeProbabilityTextBlock1.color = "black";
     outcomeProbabilityTextBlock1.fontSize = config.fontSize;
     outcomeProbabilityTextBlock1.height = adaptRatioStr(30);
-    outcomeProbabilityPanel.addControl(outcomeProbabilityTextBlock1);
+    outcomeProbabilityTextBlock1.isVisible = false;
+    outcomeProbabilityTextBlock1.isHitTestVisible = false;
+
+    outcomeProbabilityValueTextBlock.text = "0.00";
+    outcomeProbabilityValueTextBlock.color = "black";
+    outcomeProbabilityValueTextBlock.fontSize = config.fontSize * 1.4;
+    outcomeProbabilityValueTextBlock.width = adaptRatioStr(120);
+    outcomeProbabilityValueTextBlock.height = adaptRatioStr(290);
+    outcomeProbabilityValueTextBlock.textHorizontalAlignment = BABYLON.GUI.Control.HORIZONTAL_ALIGNMENT_RIGHT;
+    outcomeProbabilityValueTextBlock.textVerticalAlignment = BABYLON.GUI.Control.VERTICAL_ALIGNMENT_CENTER;
 
     outcomeProbabilityBar.minimum = 0;
     outcomeProbabilityBar.maximum = 1;
@@ -82,20 +92,32 @@ function createScene(engine, canvas, config) {
     outcomeProbabilityBar.background = "#CCCCCC";
     outcomeProbabilityBar.color = "#666666";
     outcomeProbabilityBar.value = 0;
-    outcomeProbabilityPanel.addControl(outcomeProbabilityBar);
+    outcomeProbabilityBar.isHitTestVisible = false;
+    outcomeProbabilityBar.isPointerBlocker = false;
+
+    var outcomeProbabilityRow = new BABYLON.GUI.StackPanel();
+    outcomeProbabilityRow.paddingTop = adaptRatioStr(10);
+    outcomeProbabilityRow.isVertical = false;
+    outcomeProbabilityRow.height = adaptRatioStr(290);
+    outcomeProbabilityRow.horizontalAlignment = BABYLON.GUI.Control.HORIZONTAL_ALIGNMENT_CENTER;
+
+    outcomeProbabilityRow.addControl(outcomeProbabilityValueTextBlock);
+    outcomeProbabilityRow.addControl(outcomeProbabilityBar);
+    outcomeProbabilityPanel.addControl(outcomeProbabilityRow);
+
 
     const outcomeProbabilityTextBlock0 = new BABYLON.GUI.TextBlock();
     outcomeProbabilityTextBlock0.text = "0";
     outcomeProbabilityTextBlock0.color = "black";
     outcomeProbabilityTextBlock0.fontSize = config.fontSize;
     outcomeProbabilityTextBlock0.height = adaptRatioStr(30);
-    outcomeProbabilityPanel.addControl(outcomeProbabilityTextBlock0);
+    outcomeProbabilityTextBlock0.isVisible = false;
+    outcomeProbabilityTextBlock0.isHitTestVisible = false;
 
     advancedTexture.addControl(outcomeProbabilityPanel);
     outcomeProbabilityPanel.linkWithMesh(blochSphere);
     outcomeProbabilityPanel.linkOffsetX = adaptRatioStr(-390);
     /////// END Outcome probability panel, bar, and labels
-
 
     /////// Gates panel
     var leftPanel = new BABYLON.GUI.StackPanel();
@@ -264,11 +286,13 @@ function createScene(engine, canvas, config) {
     // \vert \psi \rangle = \sqrt{ 0.80} \vert 0 \rangle + (\sqrt{0.20}) e^{i 0.25\pi} \vert 1 \rangle
 
     var qubitStateDiracImagePanel = new BABYLON.GUI.StackPanel();
+    qubitStateDiracImagePanel.isVisible = false;
+    qubitStateDiracImagePanel.isHitTestVisible = false;
     qubitStateDiracImagePanel.horizontalAlignment = BABYLON.GUI.Control.HORIZONTAL_ALIGNMENT_CENTER;
     qubitStateDiracImagePanel.verticalAlignment = BABYLON.GUI.Control.VERTICAL_ALIGNMENT_TOP;
     qubitStateDiracImagePanel.height = adaptRatioStr(546);
     qubitStateDiracImagePanel.paddingTop = adaptRatioStr(10);
-    advancedTexture.addControl(qubitStateDiracImagePanel);
+    // Dirac image panel intentionally not added to UI
 
     var qubitStateDiracImage = new BABYLON.GUI.Image("but", "images/qubit-state-dirac.png");
     qubitStateDiracImage.width = adaptRatioStr(546);
@@ -276,11 +300,13 @@ function createScene(engine, canvas, config) {
     qubitStateDiracImagePanel.addControl(qubitStateDiracImage);
 
     var qubitStateDiracTextPanel = new BABYLON.GUI.StackPanel();
+    qubitStateDiracTextPanel.isVisible = false;
+    qubitStateDiracTextPanel.isHitTestVisible = false;
     qubitStateDiracTextPanel.horizontalAlignment = BABYLON.GUI.Control.HORIZONTAL_ALIGNMENT_CENTER;
     qubitStateDiracTextPanel.verticalAlignment = BABYLON.GUI.Control.VERTICAL_ALIGNMENT_TOP;
     qubitStateDiracTextPanel.height = adaptRatioStr(546);
     qubitStateDiracTextPanel.paddingTop = adaptRatioStr(10);
-    advancedTexture.addControl(qubitStateDiracTextPanel);
+    // Dirac text panel intentionally not added to UI
 
     var qubitStateDiracTextBlock = new BABYLON.GUI.TextBlock();
     qubitStateDiracTextBlock.text = "Dirac notation will go here";
@@ -321,7 +347,7 @@ function createScene(engine, canvas, config) {
     quantumStateDiracGrid.addColumnDefinition(adaptRatio(46), true);
     quantumStateDiracGrid.addColumnDefinition(adaptRatio(50), true);
 
-    qubitStateDiracTextPanel.addControl(quantumStateDiracGrid);
+    // Dirac grid suppressed
     //// END Dirac notation grid
 
 
@@ -389,6 +415,8 @@ function createScene(engine, canvas, config) {
     statevectorInputText.background = "gray";
     statevectorInputText.paddingBottom = adaptRatioStr(8);
     statevectorInputText.paddingLeft = adaptRatioStr(8);
+    statevectorInputText.isVisible = false;
+    statevectorInputText.isHitTestVisible = false;
 
     statevectorInputText.onTextPasteObservable.add(function() {
         let txt = statevectorInputText.text;
@@ -444,7 +472,7 @@ function createScene(engine, canvas, config) {
     });
 
 
-    advancedTexture.addControl(statevectorInputText);
+    // statevectorInputText intentionally not added to UI
 
 
     /////// Control panel
@@ -483,22 +511,6 @@ function createScene(engine, canvas, config) {
     // advancedTexture.addControl(selectBox);
     /////// END Control panel
 
-
-    scene.onPointerObservable.add((pointerInfo) => {
-        switch (pointerInfo.type) {
-            case BABYLON.PointerEventTypes.POINTERDOWN:
-                // TODO: Find out how to identify that sphere was picked
-                if (pointerInfo.pickInfo.hit && pointerInfo.pickInfo.pickedMesh == blochSphere.sphere) {
-                    //if(pointerInfo.pickInfo.hit) {
-                    console.log("pickedPoint: " + pointerInfo.pickInfo.pickedPoint);
-
-                    blochSphere.setCartesianCoords(pointerInfo.pickInfo.pickedPoint);
-                    //blochSphere.updateQuantumStateLine();
-                    updateQuantumStateDisplay(config);
-                }
-                break;
-        }
-    });
 
     //blochSphere.updateQuantumStateLine();
     updateQuantumStateDisplay(config);
@@ -563,7 +575,9 @@ function updateQuantumStateDisplay(config) {
     var imaginary1 = blochSphere.getProbAmplitude1().im;
 
     // Update outcome probability bar
-    outcomeProbabilityBar.value = blochSphere.getProbability0();
+    const probability0 = blochSphere.getProbability0();
+    outcomeProbabilityBar.value = probability0;
+    outcomeProbabilityValueTextBlock.text = probability0.toFixed(2);
 
     probAmplitudeTextBlock0.text = blochSphere.getProbAmplitude0().re.toFixed(2); // +
     // (imaginary0 < 0 ? " - " : " + ") +
@@ -579,7 +593,7 @@ function updateQuantumStateDisplay(config) {
     probAmplitudeTextBlock1.fontSize = config.fontSize;
 
     probabilityTextBlock0.dispose();
-    probabilityTextBlock0.text = blochSphere.getProbability0().toFixed(2);
+    probabilityTextBlock0.text = probability0.toFixed(2);
     probabilityTextBlock0.color = "black";
     probabilityTextBlock0.fontSize = config.fontSize;
 
@@ -605,3 +619,4 @@ function updateQuantumStateDisplay(config) {
 
     quantumPhaseDisk.updateQuantumPhaseArrow();
 }
+
